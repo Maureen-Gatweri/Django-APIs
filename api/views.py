@@ -1,8 +1,17 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from student.models import Student
-from .serializer import StudentSerializer
+from teacher.models import Teacher
+from course.models import Course
+from classroom.models import Classroom
 from rest_framework.response import Response
+
+from .serializer import StudentSerializer
+from .serializer import ClassroomSerializer
+from .serializer import TeacherSerializer
+from .serializer import CourseSerializer
+
+
 
 class StudentListView(APIView):
     def get(self,request):
@@ -10,6 +19,23 @@ class StudentListView(APIView):
         serializer=StudentSerializer(students, many=True)
         return Response(serializer.data)
 
+class TeacherListView(APIView):
+    def get(self,request):
+        teacher=Teacher.objects.all()
+        serializer=TeacherSerializer(teacher, many=True)
+        return Response(serializer.data)
+    
 
+class CourseListView(APIView):
+    def get(self,request):
+        course=Course.objects.all()
+        serializer=CourseSerializer(course, many=True)
+        return Response(serializer.data)
+    
 
-# Create your views here.
+class ClassroomListView(APIView):
+    def get(self,request):
+        classroom=Classroom.objects.all()
+        serializer=ClassroomSerializer(classroom, many=True)
+        return Response(serializer.data)
+    

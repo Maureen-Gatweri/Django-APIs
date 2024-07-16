@@ -12,6 +12,8 @@ class Course(models.Model):
     start_date=models.DateField()
     end_date=models.DateField()
     assessment_method=models.CharField(max_length=30)
+
+    
     def __str__(self):
        return f"{self.title} {self.course_code}"
 
