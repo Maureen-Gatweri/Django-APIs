@@ -3,6 +3,7 @@ from student.models import Student
 from teacher.models import Teacher
 from course.models import Course
 from classroom.models import Classroom
+from classPeriod.models import ClassPeriod
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -25,4 +26,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
     class Meta:
         model= Teacher
         fields="__all__"               
-
+class ClassPeriodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=ClassPeriod
+        fields="_all_"
