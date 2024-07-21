@@ -9,6 +9,7 @@ from api.views import StudentDetailView
 from api.views import ClassPeriodDetailView
 from api.views import CourseDetailView
 from api.views import TeacherDetailView
+from api.views import ClassroomDetailView
 
 
 urlpatterns= [
@@ -29,5 +30,9 @@ urlpatterns= [
      path( "Teachers/<int:id>/", TeacherDetailView.as_view(),name = 
          "Teacher_detail_view"),
      path( "courses/<int:id>/", CourseDetailView.as_view(),name = 
+         "Course_detail_view"),
+    path( "courses/<int:id>/", ClassroomDetailView.as_view(),name = 
+         "Course_detail_view"),
+     path( "courses/<int:id>/", ClassPeriodDetailView.as_view(),name = 
          "Course_detail_view")
 ]
