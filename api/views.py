@@ -23,8 +23,17 @@ from .serializer import Classroom
 class StudentListView(APIView):
     def get(self,request):
         students=Student.objects.all()
+        first_name=request.query_params.get("first_name")
+        if first_name:
+           students=students.filter(first_name=first_name)
+        email=request.query_params.get("email")
+
+        if email:
+           students=students.filter(email=email) 
+
         serializer=StudentSerializer(students, many=True)
         return Response(serializer.data)
+        
     
     def post(self,request):
         serializer=StudentSerializer(data=request.data)
@@ -52,7 +61,18 @@ class StudentDetailView(APIView):
    def get(self,request,id):
       Student=Student.objects.get(id=id)
       serializer=StudentSerializer(Student)
-      return Response(serializer.data)     
+      return Response(serializer.data)  
+   def enroll_student(self,student,course_code):
+      course=Course.objects.get(id=course_code)
+      student.course.add(course) 
+
+   def post(self,request,id):
+      Student=Student.objects.get(id=id)
+      action=request.data.get("action")
+      if action == "enroll":
+         course_code=request.data.get("course")
+         self.enroll_student(Student,course_code)
+         return Response(status.HTTP_201_CREATED)  
      
     
 
