@@ -1,6 +1,6 @@
 from django.db import models
 
-import course
+# import course
 
 # Create your models here.
 class Course(models.Model):
