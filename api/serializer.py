@@ -52,7 +52,7 @@ class minimalTeacherSerializer(serializers.ModelSerializer):
        
       class Meta:
           model=Teacher
-          fields= ["class_name", "email","class_capacity"] 
+          fields= ["email","full_name"] 
 
 
 
@@ -74,7 +74,7 @@ class minimalClassRoomSerializer(serializers.ModelSerializer):
 
 class ClassPeriodSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Classroom
+        model=ClassPeriod
         fields="_all_"
 
 # class minimalClassPerioderializer(serializers.ModelSerializer):
@@ -85,8 +85,24 @@ class ClassPeriodSerializer(serializers.ModelSerializer):
 #       class Meta:
 #           model=ClassPeriod
 #           fields= ["start_time","end_time","period"]
+        
+# class minimalClassRoomSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ClassPeriod
+#         fields = ['id', 'start_time', 'end_time', 'day', 'classroom']
 
 
+# from rest_framework import serializers
+# from .models import ClassPeriod  # Ensure this import is correct
 
+class MinimalClassPeriodSerializer(serializers.ModelSerializer):
+    period = serializers.SerializerMethodField()
+
+    def get_period(self, obj):
+        return f"{obj.start_time} - {obj.end_time}"
+
+    class Meta:
+        model = ClassPeriod
+        fields = ["end_time", "period"]
 
 

@@ -8,7 +8,7 @@ from classroom.models import Classroom
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializer import StudentSerializer, minimalClassRoomSerializer, minimalCourseSerializer, minimalTeacherSerializer
+from .serializer import MinimalClassPeriodSerializer, StudentSerializer, minimalClassRoomSerializer, minimalCourseSerializer, minimalTeacherSerializer
 from .serializer import ClassroomSerializer
 from .serializer import TeacherSerializer
 from .serializer import CourseSerializer
@@ -89,7 +89,7 @@ class TeacherListView(APIView):
            teachers=teachers.filter(first_name==first_name)
       #   email=request.query_params.get("email")
         if email:
-           teachers=teachers.filter(email ==email) 
+           teachers=teachers.filter(email == email) 
         return Response(serializer.data)
     
     def add_teacher(self,teacher,teacher_id):
@@ -208,49 +208,46 @@ class ClassroomDetailView(APIView):
             
     
     
+
 class ClassPeriodListView(APIView):
-    def get(self,request):
-        classPeriod=classPeriod.objects.all()
-        serializer=ClassPeriodSerializer(classPeriod, many=True)
-      #   serializer=minimalClassRoomSerializer(ClassPeriod, many=True)
-      #   color=request.query_params.get("color")
-      #   classes = request.query_params.get("class_capacity")
-      #   if :
-      #      courses=courses.filter(start_time == start_time)
-      # #   email=request.query_params.get("email")
-      #   if newPeriod:
-      #      courses=courses.filter(color == color) 
-        return Response(serializer.data)
-    
-    def post(self,request):
-        serializer=ClassPeriodSerializer(data=request.data)
-        if serializer.is_valid():
-          serializer.save()
-          return Response (serializer.data,status=status.HTTP_201_CREATED)
-        else:
-          return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request):
+        class_periods = ClassPeriod.objects.all()
+        day_of_the_week = request.query_params.get("day_of_the_week")
+        classes = request.query_params.get("class_capacity")
         
-    def put (self,request,id):
-       classPeriod=classPeriod.objects.get(id=id)
-       serializer=ClassPeriodSerializer(classPeriod,data=request.data)
-       if serializer.is_valid():
-          serializer.save()
-          return Response(serializer.data,status=status.HTTP_201_CREATED)
-       else:
-          return Response (serializer.errors,status=status.HTTP_400_BAD_REQUEST)        
-   
-    def delete(self,request,id):
-       classPeriod=classPeriod.objects.get(id=id)
-       classPeriod.delete()
-       return Response(status=status.HTTP_202_ACCEPTED)  
+        if classes:
+            class_periods = class_periods.filter(class_capacity=classes)
+        
+        if day_of_the_week:
+            class_periods = class_periods.filter(day_of_the_week=day_of_the_week)
+        
+        serializer = MinimalClassPeriodSerializer(class_periods, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ClassPeriodSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, id):
+        class_period = ClassPeriod.objects.get(id=id)
+        serializer = ClassPeriodSerializer(class_period, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id):
+        class_period = ClassPeriod.objects.get(id=id)
+        class_period.delete()
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 class ClassPeriodDetailView(APIView):
-   def get(self,request,id):
-      classPeriod=ClassPeriod.objects.get(id=id)
-      serializer=ClassPeriodSerializer(classPeriod)
-      return Response(serializer.data)     
-    
-
-         
-    
-
+    def get(self, request, id):
+        class_period = ClassPeriod.objects.get(id=id)
+        serializer = ClassPeriodSerializer(class_period)
+        return Response(serializer.data)

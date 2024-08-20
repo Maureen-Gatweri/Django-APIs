@@ -21,7 +21,7 @@ urlpatterns= [
          "course_list_view"),
     path( "teacher/", TeacherListView.as_view(), name = 
          "teacher_list_view"),
-     path( "ClassPeriod/", ClassPeriodListView.as_view(), name = 
+     path( "classPeriod/", ClassPeriodListView.as_view(), name = 
          "ClassPeriod_list_view"),
 
 
