@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <h3> Teacher Registration</h3>
+   <form method="POST" class="register">
+    {%csrf.token%}
+    {{form.as_p}}
+   <button type="submit" class="btn save"> Save</button>   
+    
+</body>
+</html>
